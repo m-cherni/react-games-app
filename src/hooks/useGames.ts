@@ -18,7 +18,8 @@ export interface Game {
 const useGames = (
   selectedGenre: Genre | null,
   selectedPlatform: Platform | null,
-  selectedSort: string | null
+  selectedSort: string,
+  searchString: string
 ) =>
   useFetchData<Game>(
     "/games",
@@ -27,9 +28,10 @@ const useGames = (
         genres: selectedGenre?.id,
         platforms: selectedPlatform?.id,
         ordering: selectedSort,
+        search: searchString
       },
     },
-    [selectedGenre?.id, selectedPlatform?.id, selectedSort]
+    [selectedGenre?.id, selectedPlatform?.id, selectedSort, searchString]
   );
 
 export default useGames;
