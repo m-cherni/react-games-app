@@ -3,9 +3,10 @@ import useGenres, { Genre } from "../hooks/useGenres";
 
 interface Props {
     onSelectGenre: (genre:Genre) => void;
+    selectedGenre: Genre | null;
 }
 
-const GenreList = ({ onSelectGenre }: Props) => {
+const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
   const { data: genres, error, isLoading } = useGenres();
 
   if (isLoading) return <Spinner />
@@ -17,7 +18,7 @@ const GenreList = ({ onSelectGenre }: Props) => {
         <ListItem key={genre.id} paddingY='5px'>
             <HStack>
                 <Image boxSize='32px' borderRadius={4} src={genre.image_background} />
-                <Button variant='link' fontSize='lg' onClick={() => onSelectGenre(genre)}>{genre.name}</Button>
+                <Button fontWeight={genre.id === selectedGenre?.id ? 'bold' : 'normal'} variant='link' fontSize='lg' onClick={() => onSelectGenre(genre)}>{genre.name}</Button>
             </HStack>
         </ListItem>
       ))}

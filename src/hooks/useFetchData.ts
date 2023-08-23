@@ -7,7 +7,7 @@ interface ApiResponse<T> {
   results: T[];
 }
 
-const useFetchData = <T>(endpoint: string, requestConfig: AxiosRequestConfig, deps?: any[]) => {
+const useFetchData = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, deps?: any[]) => {
   const [data, setData] = useState<T[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
