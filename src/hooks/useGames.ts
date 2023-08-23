@@ -17,12 +17,19 @@ export interface Game {
 
 const useGames = (
   selectedGenre: Genre | null,
-  selectedPlatform: Platform | null
+  selectedPlatform: Platform | null,
+  selectedSort: string | null
 ) =>
   useFetchData<Game>(
     "/games",
-    { params: { genres: selectedGenre?.id, platforms: selectedPlatform?.id } },
-    [selectedGenre?.id, selectedPlatform?.id]
+    {
+      params: {
+        genres: selectedGenre?.id,
+        platforms: selectedPlatform?.id,
+        ordering: selectedSort,
+      },
+    },
+    [selectedGenre?.id, selectedPlatform?.id, selectedSort]
   );
 
 export default useGames;
