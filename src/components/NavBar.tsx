@@ -8,9 +8,9 @@ interface Props {
 
 const NavBar = ({ onSearch }: Props) => {
   return (
-    <HStack justifyContent='space-between' padding='10px'>
+    <HStack justifyContent="space-between" padding="10px">
       <Text>NavBar</Text>
-      <SearchInput onSearch={onSearch}/>
+      <SearchInput onSearch={onSearch} />
       <ColorModeSwitch />
     </HStack>
   );

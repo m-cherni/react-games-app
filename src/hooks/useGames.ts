@@ -1,11 +1,6 @@
-import useFetchData from "./useFetchData";
-import { Genre } from "./useGenres";
-
-export interface Platform {
-  id: string;
-  name: string;
-  slug: string;
-}
+import { useInfiniteQuery } from "@tanstack/react-query";
+import ApiClient, { ApiResponse } from "../services/api-client";
+import { Platform } from "./usePlatforms";
 
 export interface Game {
   id: number;
@@ -15,23 +10,54 @@ export interface Game {
   metacritic: number;
 }
 
+// const useGames = (
+//   selectedGenre: Genre | null,
+//   selectedPlatform: Platform | null,
+//   selectedSort: string,
+//   searchString: string
+// ) =>
+//   useFetchData<Game>(
+//     "/games",
+//     {
+//       params: {
+//         genres: selectedGenre?.id,
+//         platforms: selectedPlatform?.id,
+//         ordering: selectedSort,
+//         search: searchString
+//       },
+//     },
+//     [selectedGenre?.id, selectedPlatform?.id, selectedSort, searchString]
+//   );
+
+const apiClient = new ApiClient<Game>("/games");
+
 const useGames = (
-  selectedGenre: Genre | null,
-  selectedPlatform: Platform | null,
+  selectedGenre: number | null,
+  selectedPlatform: number | null,
   selectedSort: string,
   searchString: string
 ) =>
-  useFetchData<Game>(
-    "/games",
-    {
-      params: {
-        genres: selectedGenre?.id,
-        platforms: selectedPlatform?.id,
-        ordering: selectedSort,
-        search: searchString
-      },
+  useInfiniteQuery<ApiResponse<Game>, Error>({
+    queryKey: [
+      "games",
+      selectedGenre,
+      selectedPlatform,
+      selectedSort,
+      searchString,
+    ],
+    queryFn: ({ pageParam = 1 }) =>
+      apiClient.getListOfData({
+        params: {
+          genres: selectedGenre,
+          parent_platforms: selectedPlatform,
+          ordering: selectedSort,
+          search: searchString,
+          page: pageParam,
+        },
+      }),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.next ? allPages.length + 1 : undefined;
     },
-    [selectedGenre?.id, selectedPlatform?.id, selectedSort, searchString]
-  );
+  });
 
 export default useGames;

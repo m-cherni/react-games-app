@@ -16,11 +16,14 @@ const SortSelector = ({ onSelectSort, selectedSort }: Props) => {
     { value: "-rating", label: "Average rating" },
   ];
 
-  const orderBy = sortOrders.find(order => order.value === selectedSort);
+  const orderBy = sortOrders.find((order) => order.value === selectedSort);
   return (
     <Menu>
       <MenuButton as={Button} rightIcon={<BsChevronBarDown />}>
-        Order by {selectedSort.startsWith('-') ? orderBy?.label +' (in reverse order)' : 'Relevance'}
+        Order by{" "}
+        {selectedSort.startsWith("-")
+          ? orderBy?.label + " (in reverse order)"
+          : orderBy?.label}
       </MenuButton>
       <MenuList>
         {sortOrders.map((orderBy) => (
